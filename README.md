@@ -1,6 +1,6 @@
-# Dylan's build of dwm
+# Luke's build of dwm
 
-Here's my build of dwm. Currently just testing the waters, still using BSPWM.
+Here's my build of dwm.
 
 ## FAQ
 
