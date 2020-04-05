@@ -16,7 +16,7 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int vertpad            = 0;       /* vertical padding of bar */
 static const int sidepad            = 0;       /* horizontal padding of bar */
-static const char *fonts[]          = { "monospace:size=11", "JoyPixels:pixelsize=11:antialias=true:autohint=true", "NanumGothic:style=bold:pixelsize=14:antialias=true:autohint=true"  };
+static const char *fonts[]          = { "monospace:size=11", "JoyPixels:pixelsize=11:antialias=true:autohint=true", "NanumGothic:style=bold:pixelsize=14:antialias=true:autohint=true", };
 static char dmenufont[]       = "monospace:size=10";
 static char normbgcolor[]           = "#222222";
 static char normbordercolor[]       = "#444444";
@@ -39,10 +39,12 @@ static char *colors[][3] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Firefox",	NULL,	  NULL,		1 << 8,		0,	-1 },
-	/* { "discord",    NULL,	  NULL,		1 << 3,		0,	0 }, */
-	{ NULL,		"spotify", 	NULL,	1 << 8,		0,	0 },
+	/* class      instance    title       tags mask    iscentered  isfloating   monitor */
+	 { NULL,	"st",	"pulsemixer",	0,		1,	1,	-1 },
+	 { "Firefox",	NULL,	  NULL,		1 << 8,		0, 	0,	-1 },
+	 { NULL,	"discord",	  NULL,		1 << 7,		0,	0,	0 },
+	 { NULL,	"spotify", 	NULL,	1 << 8,		0, 	0,	0 },
+
  };
 
 /* layout(s) */
@@ -219,7 +221,7 @@ static Key keys[] = {
 	{ 0, XF86XK_AudioForward,	spawn,		SHCMD("mpc seek +10") },
 	{ 0, XF86XK_AudioMedia,		spawn,		SHCMD("st -e ncmpcpp") },
 	{ 0, XF86XK_PowerOff,		spawn,		SHCMD("[ \"$(printf \"No\\nYes\" | dmenu -i -nb darkred -sb red -sf white -nf gray -p \"Shutdown computer?\")\" = Yes ] && sudo -A shutdown -h now") },
-	{ 0, XF86XK_Calculator,		spawn,		SHCMD("st -e bc -l") },
+	{ 0, XF86XK_Calculator,		spawn,		SHCMD("st -e ddcalc -l") },
 	{ 0, XF86XK_Sleep,		spawn,		SHCMD("[ \"$(printf \"No\\nYes\" | dmenu -i -nb darkred -sb red -sf white -nf gray -p \"Hibernate computer?\")\" = Yes ] && sudo -A zzz") },
 	{ 0, XF86XK_WWW,		spawn,		SHCMD("$BROWSER") },
 	{ 0, XF86XK_DOS,		spawn,		SHCMD("st") },

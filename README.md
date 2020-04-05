@@ -14,7 +14,6 @@ This is suckless, mmmbud, the source code is the documentation! Check out `confi
 - scratchpad accessible with mod+shift+enter
 - fibbonacci/centered master/etc. other layouts
 - true fullscreen and prevents focus shifting
-- fakefulscreen
 - windows can be made sticky
 - stacker patch
 - shiftview to cycle tags
@@ -22,6 +21,7 @@ This is suckless, mmmbud, the source code is the documentation! Check out `confi
 - dwmc
 - system tray
 - status bar on all monitors
+- auto center floating windows
 
 ## Please install `libxft-rbgra`!
 
