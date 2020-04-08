@@ -85,7 +85,7 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 /*static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };*/
-static const char *dmenucmd[] = { "j4-dmenu-desktop", "--display-bin", "--dmenu", "dmenuwal" };
+static const char *dmenucmd[] = { "j4-dmenu-desktop", "--display-bin", "--dmenu", "(cat ; (stest -flx $(echo $PATH | tr : ' ') | sort -u)) | dmenuwal" };
 static const char *termcmd[]  = { "st", NULL };
 static const char scratchpadname[] = "scratchpad";
 static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", "-e", "tmux", NULL };
