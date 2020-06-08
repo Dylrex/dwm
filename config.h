@@ -6,8 +6,9 @@ static const unsigned int gappiv    = 20;       /* vert inner gap between window
 static const unsigned int gappoh    = 20;       /* horiz outer gap between windows and screen edge */
 static const unsigned int gappov    = 20;       /* vert outer gap between windows and screen edge */
 static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
-static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
+static const int swallowfloating    = 1;        /* 1 means swallow floating windows by default */
 static const unsigned int systraypinning = 1;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
 static const unsigned int systrayspacing = 3;   /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
@@ -39,16 +40,18 @@ static char *colors[][3] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask    iscentered  isfloating   monitor */
-	 { NULL,	"st",	"pulsemixer",	0,		1,	1,	-1 },
-	 { "Firefox",	NULL,	  NULL,		1 << 8,		0, 	0,	-1 },
-	 { NULL,	"discord",	  NULL,		1 << 7,		0,	0,	0 },
-	 { NULL,	"spotify", 	NULL,	1 << 8,		0, 	0,	0 },
+	/* class      instance    title       tags mask    iscentered  isfloating  isterminal noswallow monitor */
+	 { NULL,	"st",		NULL,	0,		0,	0,	1,	0,	-1 },
+	 { NULL,	"st",	"pulsemixer",	0,		1,	1,	0,	0,	-1 },
+	 { "Firefox",	NULL,	  NULL,		1 << 8,		0, 	0,	0,	0,	-1 },
+	 { NULL,	"discord",	  NULL,		1 << 7,		0,	0,	0, 0, 0 },
+	 { NULL,	"spotify", 	NULL,	1 << 8,		0, 	0,	0, 0, 0 },
+	 /* { NULL,	"spcalc",	NULL,	SPTAG(1),	1,	1,	-1 }, */
 
  };
 
 /* layout(s) */
-static const float mfact     = 0.5; /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 
@@ -89,6 +92,7 @@ static const char *dmenucmd[] = { "j4-dmenu-desktop", "--display-bin", "--dmenu"
 static const char *termcmd[]  = { "st", NULL };
 static const char scratchpadname[] = "scratchpad";
 static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", "-e", "tmux", NULL };
+static const char *spcmd2[] = { "st", "-n", "spcalc", "-f", "monospace:size=16", "-g", "50x20", "-e", "bc", "-lq", NULL };
 
 #include <X11/XF86keysym.h>
 #include "shiftview.c"
@@ -166,10 +170,10 @@ static Key keys[] = {
 	{ MODKEY,			XK_z,		incrgaps,	{.i = +1 } },
 	{ MODKEY|ShiftMask,		XK_z,		incrgaps,	{.i = -1 } },
 	{ MODKEY,			XK_x,		spawn,		SHCMD("betterlockscreen -l blur") },
-	{ MODKEY,			XK_c,		spawn,		SHCMD("st -e calcurse -D ~/.config/calcurse") },
+	{ MODKEY,			XK_c,		spawn,		SHCMD("st -e calcurse -q -D ~/.config/calcurse") },
 	/*{ MODKEY|ShiftMask,		XK_c,		spawn,		SHCMD("mpv --no-osc --no-input-default-bindings --input-conf=/dev/null --title=mpvfloat $(ls /dev/video[0,2,4,6,8] | tail -n 1)") },*/
 	{ MODKEY,			XK_v,		spawn,		SHCMD("st -e $EDITOR -c \"VimwikiIndex\"") },
-	{ MODKEY|ShiftMask,		XK_v,		spawn,		SHCMD("{ killall xcompmgr || setsid xcompmgr & } ; xwallpaper --zoom ~/.config/wall.png") },
+	/* { MODKEY|ShiftMask,		XK_v,		spawn,		SHCMD("") }, */
 	{ MODKEY,			XK_b,		togglebar,	{0} },
 	{ MODKEY|ShiftMask,		XK_b,		spawn,		SHCMD("hover left") },
 	{ MODKEY,			XK_n,		spawn,		SHCMD("st -e newsboat; pkill -RTMIN+6 dwmblocks") },
