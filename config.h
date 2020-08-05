@@ -9,7 +9,7 @@ static const int smartgaps          = 0;        /* 1 means no outer gap when the
 static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 1;        /* 1 means swallow floating windows by default */
-static const unsigned int systraypinning = 1;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
+static const unsigned int systraypinning = 2;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
 static const unsigned int systrayspacing = 3;   /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
 static const int showsystray        = 1;     /* 0 means no systray */
@@ -44,9 +44,10 @@ static char *colors[][3] = {
 	 { NULL,	"st",		NULL,	0,		0,	0,	1,	0,	-1 },
 	 { NULL,	"st",	"pulsemixer",	0,		1,	1,	0,	0,	-1 },
 	 { "Firefox",	NULL,	  NULL,		1 << 8,		0, 	0,	0,	0,	-1 },
-	 { NULL,	"discord",	  NULL,		1 << 7,		0,	0,	0, 0, 0 },
-	 { NULL,	"spotify", 	NULL,	1 << 8,		0, 	0,	0, 0, 0 },
+	 { NULL,	"discord",	  NULL,		1 << 7,		0,	0,	0, 0, 1 },
+	 { NULL,	"spotify", 	NULL,	1 << 8,		0, 	0,	0, 0, 1 },
 	 /* { NULL,	"spcalc",	NULL,	SPTAG(1),	1,	1,	-1 }, */
+	 { NULL,	"gnome-calc", 	NULL,	0,		1, 	1,	0, 0, -1 },
 
  };
 
@@ -101,7 +102,7 @@ static Key keys[] = {
 	STACKKEYS(MODKEY,                          focus)
 	STACKKEYS(MODKEY|ShiftMask,                push)
 	{ MODKEY,			XK_Escape,	spawn,	SHCMD("betterlockscreen -l blur") },
-	{ MODKEY|ShiftMask,		XK_Escape,		spawn,		SHCMD("[ \"$(printf \"No\\nYes\" | dmenu -i -nb darkred -sb red -sf white -nf gray -p \"Shutdown computer?\")\" = Yes ] && sudo -A shutdown -h now") },
+	{ MODKEY|ShiftMask,		XK_Escape,		spawn,		SHCMD("[ \"$(printf \"No\\nYes\" | dmenu -i -nb darkred -sb red -sf white -nf gray -p \"Shutdown computer?\")\" = Yes ] && sudo shutdown -h now") },
 	{ MODKEY|ControlMask,		XK_Escape,	spawn,	SHCMD("[ \"$(printf \"No\\nYes\" | dmenu -i -nb darkred -sb red -sf white -nf gray -p \"Reboot computer?\")\" = Yes ] && sudo -A reboot") },
 	{ MODKEY,			XK_grave,	spawn,	SHCMD("dmenuunicode") },
 	/* { MODKEY|ShiftMask,		XK_grave,	togglescratch,	SHCMD("") }, */
@@ -136,7 +137,7 @@ static Key keys[] = {
 	/* { MODKEY|ShiftMask,		XK_i,		spawn,		SHCMD("") }, */
 	/* { MODKEY,			XK_o,		incnmaster,     {.i = +1 } }, */
 	/* { MODKEY|ShiftMask,		XK_o,		incnmaster,     {.i = -1 } }, */
-	{ MODKEY,			XK_p,			spawn,		SHCMD("st -e transmission-remote-cli") },
+	{ MODKEY,			XK_p,			spawn,		SHCMD("transmission-remote-gtk") },
 
 	/*{ MODKEY|ShiftMask,		XK_p,			spawn,		SHCMD("mpc pause ; pauseallmpv") },
 	{ MODKEY,			XK_bracketleft,		spawn,		SHCMD("mpc seek -10") },
@@ -169,7 +170,7 @@ static Key keys[] = {
 
 	{ MODKEY,			XK_z,		incrgaps,	{.i = +1 } },
 	{ MODKEY|ShiftMask,		XK_z,		incrgaps,	{.i = -1 } },
-	{ MODKEY,			XK_x,		spawn,		SHCMD("betterlockscreen -l blur") },
+	{ MODKEY,			XK_x,		spawn,		SHCMD("st -e curl wttr.in/unanderra") },
 	{ MODKEY,			XK_c,		spawn,		SHCMD("st -e calcurse -q -D ~/.config/calcurse") },
 	/*{ MODKEY|ShiftMask,		XK_c,		spawn,		SHCMD("mpv --no-osc --no-input-default-bindings --input-conf=/dev/null --title=mpvfloat $(ls /dev/video[0,2,4,6,8] | tail -n 1)") },*/
 	{ MODKEY,			XK_v,		spawn,		SHCMD("st -e $EDITOR -c \"VimwikiIndex\"") },
@@ -197,8 +198,8 @@ static Key keys[] = {
 	{ MODKEY,			XK_F5,		spawn,		SHCMD("mailsync") },
 	{ MODKEY,			XK_F6,		spawn,		SHCMD("torwrap") },
 	{ MODKEY,			XK_F7,		spawn,		SHCMD("td-toggle") },
-	{ MODKEY,			XK_F8,		spawn,		SHCMD("dualmonitor") },
-	{ MODKEY|ShiftMask,		XK_F8,		spawn,		SHCMD("dualtv") },
+	{ MODKEY,			XK_F8,		spawn,		SHCMD("dmigpumain") },
+	{ MODKEY|ShiftMask,		XK_F8,		spawn,		SHCMD("dmigpuvm") },
 	{ MODKEY,			XK_F9,		spawn,		SHCMD("dmenumount") },
 	{ MODKEY,			XK_F10,		spawn,		SHCMD("dmenuumount") },
 	/* { MODKEY,			XK_F11,		spawn,		SHCMD("") }, */
@@ -225,7 +226,7 @@ static Key keys[] = {
 	{ 0, XF86XK_AudioForward,	spawn,		SHCMD("mpc seek +10") },
 	{ 0, XF86XK_AudioMedia,		spawn,		SHCMD("st -e ncmpcpp") },
 	{ 0, XF86XK_PowerOff,		spawn,		SHCMD("[ \"$(printf \"No\\nYes\" | dmenu -i -nb darkred -sb red -sf white -nf gray -p \"Shutdown computer?\")\" = Yes ] && sudo -A shutdown -h now") },
-	{ 0, XF86XK_Calculator,		spawn,		SHCMD("st -e ddcalc -l") },
+	{ 0, XF86XK_Calculator,		spawn,		SHCMD("gnome-calculator") },
 	{ 0, XF86XK_Sleep,		spawn,		SHCMD("[ \"$(printf \"No\\nYes\" | dmenu -i -nb darkred -sb red -sf white -nf gray -p \"Hibernate computer?\")\" = Yes ] && sudo -A zzz") },
 	{ 0, XF86XK_WWW,		spawn,		SHCMD("$BROWSER") },
 	{ 0, XF86XK_DOS,		spawn,		SHCMD("st") },
